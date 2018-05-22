@@ -1,0 +1,69 @@
+**IFFE
+-------
+
+1. part 1 - immediately invoked when a control reaches the line of IFFE. 
+2. Par 2 - Whatever decalred inside it cannot be accessed outside. It helps you create closures 
+           unless returned explicitly using return statement.
+3. primary reason is to have data privacy.
+4. you can aslo pass an argument to an IFFE. Access somthing outside the scope of IFFE 
+    becomes easier.
+5. use this if u want to encapsulate
+6. what good is an IFFE if u dont return anything. (Not necessary to return always)
+
+
+prototype:
+
+1. special object.
+2. primitive and reference data type. (In the reference we will have object as fundamental unit).
+3. base of the refernece is "Object".
+4. Every object has prototype member. That contains properties that are somewhat visible to 
+    heirarchy of objects. Object is the base --> when we clone the object or assign it the new 
+    object will hold the reference to the object which was used to create it from and obviosuly 
+    the new object also inherits the prototypes from which it was created. This is classic 
+    prototypical objects. Advantages is you can have hierarchy of objects still holding refernce 
+    to the original one.
+
+var a = Object.create({});
+a.prototype = a.prototype || Object.getPrototypeOf(a);
+a.prototype.getName = function() {
+    return 'a';
+}
+
+console.log(a.getName());
+
+var b = Object.create(a);
+
+console.log(b.getName());
+
+b.getName = function() {
+    return 'b';
+}
+
+console.log(b.getName());
+console.log(a.getName());
+
+function vehicle() {
+
+}
+vehicle.prototype.getName = function() {  return 'Vehicle' };
+
+function car() {
+
+}
+
+extend(car, vehicle);
+var d = new car();
+var v = new vehicle();
+
+console.log(d.getName());
+console.log(v.getName());
+
+car.prototype.getName = function() { return 'Car' };
+
+function extend(child, parent) {
+    child.prototype = Object.create(parent.prototype);
+    child.prototype.super = parent;
+}
+
+console.log(d.getName());
+console.log(v.getName());

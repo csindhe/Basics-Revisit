@@ -1,0 +1,60 @@
+.container {
+    border: 1px solid black;
+    height: 100vh;
+    background: aliceblue;
+}
+.header-container {
+    text-align: center;
+    color: darkblue;
+}
+.input-container, .search-container {
+    display: flex;
+    width: 60%;
+}
+.bottom-header {
+    flex-basis: 100%;
+    flex-grow: 0;
+    margin: 1%;
+}
+.search-container {
+    flex-basis: 50%;
+    flex-grow: 2;
+}
+.bottom-input-search {
+    margin: 2%;
+    margin-top: 1%;
+}
+.input-div {
+    flex-basis: 90%;
+}
+.input-btn {
+    flex-basis: 10%;
+}
+input#todo-input-data, input#todo-search-data {
+    width: 95%;
+}
+button#todo-input-btn, button#todo-search-btn {
+    width: 100%;
+    cursor: pointer;
+}
+.bottom-container {
+    margin: 1%;
+    border: 1px solid;
+    background: gainsboro;
+}
+.output-container {
+    margin: 1%;
+    border: 1px solid;
+    background: cadetblue;
+}
+.result-container {
+    border: 1px solid;
+    background: white;
+    margin: 2%;
+    width: 60%;
+}
+.remove-item{
+    width: 90%;
+    float: right;
+    cursor: pointer;
+}

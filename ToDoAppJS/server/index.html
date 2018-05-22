@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" >
+    <link rel="stylesheet" href="main.css"></link>
+    <script type="module" src="../main.js"></script>
+    <script type="module" src="../promiseMessageAPI.js"></script>
+    <script type="module" src="../webSocketAPI.js"></script>
+    <title>Todo App JS</title>
+</head>
+<body>
+    <div class="container">
+        <div class="header-container">
+            <h1>Javascript Todo App</h1>
+        </div>
+        <div class="bottom-container">
+            <div class="bottom-header">
+                <h2>Input & Search</h2>
+            </div>
+            <br>
+            <div class="bottom-input-search">
+                <div class="input-container">
+                    <div class="input-div">
+                        <input type="text" id="todo-input-data" class="todo-input-data">
+                    </div>
+                    <div class="input-btn">
+                        <button id="todo-input-btn" class="todo-btn">Submit</button>
+                    </div>
+                </div>
+                <br>
+                <div class="search-container">
+                    <div class="input-div">
+                        <input type="text" id="todo-search-data" class="todo-input-data">
+                    </div>
+                    <div class="input-btn">
+                        <button id="todo-search-btn" class="todo-btn">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="output-container">
+            <h2 style="margin: 1%;">Output Result:</h2>
+            <div class="result-container" id="resultcontainer">
+
+            </div>
+        </div>
+        <div class="promise-container">
+            <h3>Promise Container</h3>
+            <div class="success-container">
+
+            </div>
+            <div class="failure-container">
+
+            </div>
+        </div>
+        <div class="socket-container">
+            <label for="">Enter your chat message here :</label>
+            <textarea col=10 row=10 value="" id='chatMessage'></textarea>
+            <input type="button" class="b" value="Send" id='sendMessage'>
+        </div>
+    </div>
+</body>
+</html>
