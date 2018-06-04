@@ -1,0 +1,189 @@
+60fps and Device Refresh Rates:
+--------------------------------
+
+1. refreshes screen 60 times/second.
+2. Any kind of transition or animation or scrolling; the browser should match the device's refresh rate 
+   and put up 1 new frame or picture for each refreshes.
+3. All my work need to done within 10ms. (Each refresh takes 1 second/60 = 16.66 ms).
+4. If i fail to meet the above time limit then the frame rate drops and the content judders on the screen.
+   This is called as "JANK".
+
+The Pixel pipeline: (Pixel to Screen pipeline )
+--------------------
+
+Javascript --> Style --> Layout --> Paint --> Composite
+
+Javascript:
+--------------
+
+1. used to handle work that results in visual changes.
+2. jQuery's animate function, sorting of data set, adding DOM elements to the page.
+
+Style Calculations:
+---------------------
+
+1. process of figuring out which css rules apply to which elements in the DOM based on matching selectors.
+2. Once known rules are applied; the final styles for each element will be calculated.
+
+Layout:
+--------
+
+1. Once the browser knows which rules to apply to an element, it will begin calculating how much space it takes
+   up and where it is placed on the screen.
+2. The web's layout model means that one element can affect others. ex: width of <body> will affect all its 
+   childs' width and all the way down the tree and all the way up as well.
+3. QUite busy process this is for a browser.
+
+Paint:
+-------
+
+1. This is the process of filling in pixels.
+2. It involves drawing out text, colors, images, borders and shadows i.e. every visual part of the elements.
+3. The drawing is typically done onto multiple surfaces, often called as layers.
+
+Paint - Sub Tasks:
+--------------------
+
+1. creating list of draw cells.
+2. filling in pixels. (this is called Rasterization)
+
+Compositing:
+-------------
+
+1. Since the parts of the page were drawn into different layers they need to be drawn to the screen in 
+   specific order (Correct order) so that page renders correctly.
+2. This is important for elements that overlap another.
+
+
+3 ways a pipeline plays out for a given frame when a visual change is made:
+
+1. Javascript 2. CSS 3. Web Animations
+
+1. JS/CSS > Style > Layout > Paint > Composite
+   If we change a "Layout" property, i.e. one that changes an elements' geometry like width, height, 
+   position (left or top); the browser will check all the other elements and "reflow" the page. 
+   Any affected areas will be repainted and final painted elements will need to be composited back togethor.
+
+2. JS/CSSS > Style > Paint > Composite
+   If we change "paint only" property i.e background image, text color, or shadows i.e. changes that does not
+   affect the layout of the page, then browser skips the layout but it will still do the paint.
+
+3. JS/CSS > Style > composite
+   If we change a property that does not affect the layout or paint the browser just jumps to Compositing.
+   This is the most desirable and cheapest for high pressure points in an app's lifecycle.
+   (ex: animations, scrolling)
+
+Stick to Compositor-Only properties and Manage Layer Count:
+--------------------------------------------------------------
+
+2 key factors that affects page performance: 
+    a. Number of Composite Layers that needs to be managed. 
+    b. Properties that we use for animation.
+
+TL;DR
+    a. Stick to transform and opacity changes for your animations. 
+       (Only Transform and Opacity which will be handled by Compositor-Layer)
+       (Only caveat is the element should be on its own composite layer i.e. promoting the element)
+       (Use FLIP principle)
+       Position transform: translate(npx, npx);
+       Scale    transform: scale(n);
+       Rotation transform: rotate(ndeg);
+       Skew     transform: skew(X|Y)(ndeg);
+       Matrix   transform: matrix(3d)(...);
+       Opacity  opacity: 0....1;
+
+       FLIP: First Last Invert Play (It is an approach not framework for thinking abt cheap animations 60fps)
+
+       First: intial state of the elements involved in the transition.
+       Last: Final state of the elements
+       Invert: figure out from the first and last how the element has changed say   width, height opacity.
+               next apply transforms and opacity changes to reverse or invert them.
+       Play: Switch on transitions for any of the properties you changed and then remove the inversion 
+             changes. 
+
+
+    b. promote moving elements with will-change or translate-z.
+       (this gives the browser fore-warning that changes are incoming and depending on what we want to change 
+       the browser can potentially make provisions, i.e. creating compositor layers)
+    c. Avoid overusing promotion rules; layers  require memory and management.
+       (Manage layers and avoid layer explosions)
+
+
+Rules:
+-------
+1: No frame should exceed 16 ms.
+2. Never trigger a forced sync layout.
+3. Never sniff the user agent string.
+
+Optimizing Javascript execution:
+----------------------------------
+
+TL;DR:
+    a. Avoid setTimeout or setInterval for visual updates, always use requestAnimationFrame instead.
+    b. Move long running javascript off the main thread to web workers.
+    c. use micro tasks to make DOM changes over several frames.
+    d. Use chrome dev tools' timeline and javascript profiler to assess the impact of   Javascript.
+
+
+RequestAnimationFrame:
+-----------------------
+
+Only way to guarantee that our javascript runs at the start of a frame is to use RequestAnimationFrame.
+
+function updateScreen(time) {
+
+}
+
+requestAnimationFrame(updateScreen);
+
+Webworkers:
+-------------
+
+Javascript runs on the browser's main thread along with style calcs, layout and paint. If my javascript 
+runs for longer time then it will block other tasks and results in missing of a frame or two.
+
+Ideally my javascript should be withing 3-4 ms. Anything longer is bad. In such cases we should push the 
+computational task to Web Workers. Ex: Data Manipulation or traversal, like sorting or searching.
+
+Webworkers do not have DOM access. 
+
+Javascript's Frame Tax:
+------------------------
+
+cost involved in running the javascript code on frame-by-frame basis.
+
+Computed style calculation:
+-----------------------------
+
+Changing DOM through adding or removing elements, changing attributes, classes or through animation will cause
+the browser to recalculate element styles, and in many cases layout (or reflow ) the page or parts of it. This
+is called Computed Style Calculation.
+
+Always reduce the complexity of your selectors; use a class-centric methodology (BEM).
+Reduce the number of elements on which style calculation must be calculated.
+
+Measure your Style recalculation cost.
+
+Use BEM (Block Element Modifier)
+
+Debounce the input handlers:
+-----------------------------
+
+--> long running input handlers are bad; they can block scrolling.
+--> Dont make style changes in input handlers.
+--> Debounce the handler, store event values and deal with style changes in the next requestAnimationFrame
+    callback.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

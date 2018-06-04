@@ -1,0 +1,14 @@
+Asynchronous Javascript & XML (AJAX)
+--------------------------------------
+
+1. use of XMLHTTPRequest object to communicate with servers.
+2. it can send and recieve information in JSON, XML, HTML & Text files.
+3. Asynchronous nature. (No refresh of page needed)
+4. Make request to the server without reloading the page.
+5. Receive and work with data from the server.
+
+Fetch
+-------
+
+1. This returns a promise which is resolved into response.
+2. CORS and HTTP origin header semantics.

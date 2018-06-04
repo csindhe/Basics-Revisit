@@ -1,0 +1,54 @@
+Objects/Prototypes
+-------------------
+
+1. Nearlly all objects in javascript are instances of "Object".
+2. Typically a object inherits properties (including methods) from Object.prototype.
+3. Changes to the Object prototype object are seen by all objects through prototype chaining.
+
+properties:
+-----------
+
+1. Object.prototype.constructor - specifies the function that creates an object's prototype.
+
+Methods:
+---------
+
+1. Object.prototype.hasOwnProperty() -- (returns true for all except those not inherited through 
+                                         prototype chain)
+2. Object.prototype.isPrototypeOf() -- (returns boolean whether the object on which this method is 
+                                        called is in the protype chain of specified object).
+3. Object.prototype.propertyIsEnumerable() 
+4. Object.prototype.toLocaleString() -- calls toString().
+5. Object.prototype.toString() -- returns string representation of an object.
+
+Objects:
+--------
+
+An object is a collection of properties.
+A property is an association between key and a value.
+If a property's value is a function, in that case it is called as Method.
+
+
+Prototypes:
+-----------
+
+are mechanism by which javascript objects inherit features from another.
+Javascript is prototype-based language. Each object has prototypes which acts as a template object 
+that it inherits methods and properties from.
+An Object's prototype object may also have a prototype object, which it inherits methods and properties 
+from and so on. This is called Prototype-Chain.
+Properties and methods are defined on the Prototype property on the Object's constructor function, not 
+the object instances themselves.
+In javascript link is made between the object instance and its prototype (its _proto_ property, which 
+is derived from the prototype property on the constructor)
+
+Difference between an Object's Prototype and Prototype property on the constructor functions:
+----------------------------------------------------------------------------------------------
+
+Object's prototype (Object.getPrototypeOf(Obj)) is the property on each instance.
+Prototype property is property on constructor.
+
+ex: Object.getPrototypeOf(new Foobar()) refers to the same object as Foobar.prototype.
+
+
+
